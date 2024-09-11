@@ -51,4 +51,15 @@ public class ClienteService implements ClienteServiceInterface {
         return clienteRepository.save(updCliente);
 	}
 
+	public void delete(Long id) {
+		Optional<Cliente> findCliente = clienteRepository.findById(id);
+		
+	    if (!findCliente.isPresent()) {
+	        throw new ClienteNotFoundException("Não há cliente com o ID fornecido.");
+	    }		
+	    
+		clienteRepository.deleteById(id);
+		
+	}
+
 }
