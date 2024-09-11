@@ -8,5 +8,6 @@ public interface ClienteServiceInterface {
 	
 	Cliente save(Cliente cliente);
 	List<Cliente> findAll();
+	Cliente update(Cliente cliente, Long id);
 
 }
