@@ -1,0 +1,35 @@
+package br.com.plgs.AppClientes.resource;
+
+import java.net.URI;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.plgs.AppClientes.model.Cliente;
+import br.com.plgs.AppClientes.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/clientes")
+public class ClienteResource {
+	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@Operation(summary = "Grava o registro de Cliente")
+	@PostMapping
+	public ResponseEntity<Cliente> save(@Valid @RequestBody Cliente cliente) {
+		Cliente newCliente = clienteService.save(cliente);
+		if(newCliente == null) {
+			return ResponseEntity.notFound().build();
+		}
+		URI location = URI.create("/clientes/" + newCliente.getId());
+	    return ResponseEntity.created(location).body(newCliente);
+	}
+
+}
