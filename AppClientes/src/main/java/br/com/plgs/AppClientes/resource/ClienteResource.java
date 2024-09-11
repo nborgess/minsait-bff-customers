@@ -1,9 +1,11 @@
 package br.com.plgs.AppClientes.resource;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,19 @@ public class ClienteResource {
 		}
 		URI location = URI.create("/clientes/" + newCliente.getId());
 	    return ResponseEntity.created(location).body(newCliente);
+	}
+	
+	@Operation(summary = "Busca todos os registros de Clientes")
+	@GetMapping
+	public ResponseEntity<List<Cliente>> findAllClientes() {
+		List<Cliente> clientes = clienteService.findAll();
+		if(clientes == null) {
+			return ResponseEntity.notFound().build();
+		}
+		if(clientes.size() == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(clientes);
 	}
 
 }
