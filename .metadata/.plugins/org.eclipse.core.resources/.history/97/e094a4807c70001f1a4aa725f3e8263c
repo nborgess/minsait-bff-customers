@@ -39,8 +39,6 @@ public class ClienteResource {
 	    return ResponseEntity.created(location).body(newCliente);
 	}
 	
-	@Operation(summary = "Busca registro pelo ID do Cliente")
-	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Cliente>> findById(@PathVariable Long id) {
 		Optional<Cliente> cliente = clienteService.findById(id);
 		if(cliente.isEmpty()) {

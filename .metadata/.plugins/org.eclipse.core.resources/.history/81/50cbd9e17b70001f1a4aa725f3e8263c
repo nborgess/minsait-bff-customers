@@ -25,16 +25,6 @@ public class ClienteService implements ClienteServiceInterface {
 
         return clienteRepository.save(cliente);
 	}
-	
-	public Optional<Cliente> findById(Long id) {
-		Optional<Cliente> findCliente = clienteRepository.findById(id);
-		
-		if(!findCliente.isPresent()) {
-			throw new ClienteNotFoundException("Não há cliente com o ID fornecido.");
-		}
-		
-		return clienteRepository.findById(id);
-	}
 
 	public List<Cliente> findAll() {
 		return clienteRepository.findAll();
