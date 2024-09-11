@@ -1,0 +1,84 @@
+package br.com.plgs.AppClientes.resource;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.plgs.AppClientes.exception.SuccessResponse;
+import br.com.plgs.AppClientes.model.Cliente;
+import br.com.plgs.AppClientes.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/clientes")
+public class ClienteResource {
+	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@Operation(summary = "Grava o registro de Cliente")
+	@PostMapping
+	public ResponseEntity<Cliente> save(@Valid @RequestBody Cliente cliente) {
+		Cliente newCliente = clienteService.save(cliente);
+		if(newCliente == null) {
+			return ResponseEntity.notFound().build();
+		}
+		URI location = URI.create("/clientes/" + newCliente.getId());
+	    return ResponseEntity.created(location).body(newCliente);
+	}
+	
+	@Operation(summary = "Busca registro pelo ID do Cliente")
+	@GetMapping("/{id}")
+	public ResponseEntity<Optional<Cliente>> findById(@PathVariable Long id) {
+		Optional<Cliente> cliente = clienteService.findById(id);
+		if(cliente.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(cliente);
+	}
+	
+	@Operation(summary = "Busca todos os registros de Clientes")
+	@GetMapping
+	public ResponseEntity<List<Cliente>> findAllClientes() {
+		List<Cliente> clientes = clienteService.findAll();
+		if(clientes == null) {
+			return ResponseEntity.notFound().build();
+		}
+		if(clientes.size() == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(clientes);
+	}
+	
+	@Operation(summary = "Atualiza o registro do Cliente por ID")
+	@PutMapping("/{id}")
+	public ResponseEntity<Cliente> update(@Valid @RequestBody Cliente cliente, @PathVariable Long id) {
+		Cliente updCliente = clienteService.update(cliente, id);
+		if(updCliente == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(updCliente);
+	}
+	
+	@Operation(summary = "Deleta o registro do Cliente por ID")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@Valid @PathVariable Long id) {
+		clienteService.delete(id);
+		SuccessResponse response = new SuccessResponse("Cliente removido com sucesso.");
+		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+	}
+
+}

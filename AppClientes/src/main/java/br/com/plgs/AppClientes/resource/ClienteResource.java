@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.plgs.AppClientes.exception.SuccessResponse;
 import br.com.plgs.AppClientes.model.Cliente;
 import br.com.plgs.AppClientes.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,7 +77,8 @@ public class ClienteResource {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@Valid @PathVariable Long id) {
 		clienteService.delete(id);
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		SuccessResponse response = new SuccessResponse("Cliente removido com sucesso.");
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 	}
 
 }
