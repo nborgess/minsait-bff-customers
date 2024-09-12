@@ -1,0 +1,39 @@
+package br.com.plgs.AppClientes.resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
+
+import br.com.plgs.AppClientes.configuration.JwtTokenUtil;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthResource {
+	
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+            );
+
+            String token = jwtTokenUtil.createToken(authRequest.getUsername());
+            return ResponseEntity.ok(new AuthResponse(token, 3600)); // Expiração de 3600 segundos
+
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body(
+                new ErrorResponse("Credenciais inválidas", "Nome de usuário ou senha incorretos.")
+            );
+        }
+    }
+}

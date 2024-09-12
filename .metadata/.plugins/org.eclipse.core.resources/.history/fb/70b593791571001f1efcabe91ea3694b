@@ -1,0 +1,5 @@
+package br.com.plgs.AppClientes.configuration;
+
+public class UserDetailsServiceImpl {
+
+}

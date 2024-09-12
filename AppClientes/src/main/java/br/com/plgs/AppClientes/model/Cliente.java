@@ -9,12 +9,16 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Entity
 @Table(name="tb_cliente")
@@ -41,15 +45,5 @@ public class Cliente {
     @NotBlank(message = "O endereço não pode ser nulo ou vazio.")
 	@Column(nullable = false)
 	private String endereco;
-	
-	public Cliente() { }
-
-	public Cliente(Long id, String nome, String email, String telefone, String endereco) {
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.telefone = telefone;
-		this.endereco = endereco;
-	}
 
 }

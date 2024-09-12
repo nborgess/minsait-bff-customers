@@ -1,0 +1,59 @@
+package br.com.plgs.AppClientes.resource;
+
+import java.util.Collections;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+import br.com.plgs.AppClientes.configuration.JwtTokenUtil;
+import br.com.plgs.AppClientes.dto.LoginRequest;
+import br.com.plgs.AppClientes.dto.LoginResponse;
+import br.com.plgs.AppClientes.exception.ErrorResponse;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    public AuthController(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+            String token = jwtTokenUtil.createToken(authentication.getName());
+            return ResponseEntity.ok(new LoginResponse(token, jwtTokenUtil.getValidityInSeconds()));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas", "Nome de usuário ou senha incorretos."));
+        }
+    }
+    
+    @GetMapping("/me")
+    public ResponseEntity<?> getMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return ResponseEntity.ok(Map.of(
+                "id", 1, 
+                "username", authentication.getName(),
+                "nome", "Nome do Usuário", 
+                "roles", Collections.singletonList("ROLE_USER")
+            ));
+        } else {
+            return ResponseEntity.status(401).body(new ErrorResponse("Não autorizado", "Token de autenticação inválido ou expirado."));
+        }
+    }
+}

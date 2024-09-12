@@ -1,0 +1,42 @@
+package br.com.plgs.AppClientes.resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.plgs.AppClientes.configuration.JwtTokenUtil;
+import br.com.plgs.AppClientes.exception.ErrorResponse;
+import br.com.plgs.AppClientes.model.LoginRequest;
+import br.com.plgs.AppClientes.model.TokenResponse;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            
+            String token = jwtTokenUtil.createToken(loginRequest.getUsername());
+            
+            return ResponseEntity.ok(new TokenResponse(token, 3600));
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse("Credenciais inválidas", "Nome de usuário ou senha incorretos.");
+            return ResponseEntity.status(401).body(errorResponse);
+        }
+    }
+}
