@@ -25,3 +25,15 @@
 1726166786478	Delete element
 1726166788979	Delete element
 1726166792824	Delete element
+1726170669440	Delete element
+1726170672781	Delete element
+1726171715258	Rename type 'Cliente'
+1726171779173	Rename type 'ClienteService'
+1726171800772	Rename type 'ClienteRepository'
+1726171815977	Rename type 'ClienteResource'
+1726171921502	Rename type 'ClienteServiceInterface'
+1726171959003	Rename type 'ClienteException'
+1726171966966	Rename type 'ClienteNotFoundException'
+1726172441545	Rename package 'br.com.plgs.AppClientes.resource'
+1726172459434	Rename type 'CustomerResource'
+1726172472718	Rename type 'AuthResource'

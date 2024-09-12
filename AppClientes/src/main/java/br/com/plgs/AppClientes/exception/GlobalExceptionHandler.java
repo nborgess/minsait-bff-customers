@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-    @ExceptionHandler(ClienteException.class)
+    @ExceptionHandler(CustomerException.class)
     @ResponseBody
-    public ResponseEntity<ErrorResponse> handleClienteException(ClienteException e) {
+    public ResponseEntity<ErrorResponse> handleClienteException(CustomerException e) {
         ErrorResponse errorResponse = new ErrorResponse("Dados inválidos", e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
     
-    @ExceptionHandler(ClienteNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleClienteNotFoundException(ClienteNotFoundException ex) {
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleClienteNotFoundException(CustomerNotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Cliente não encontrado", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
