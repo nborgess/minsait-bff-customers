@@ -14,28 +14,28 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtTokenUtil {
 
-	private String segredo = "umSegredoMuitoLongoQueTemMaisDe256BitsParaSerSeguroComHMACSHA";
-	private long validadeM = 3600000; 
+	private String secret = "umSegredoMuitoLongoQueTemMaisDe256BitsParaSerSeguroComHMACSHA";
+	private long validityM = 3600000; 
 	
 	public String createToken(String username) {
-		Date agora = new Date();
-		Date validade = new Date(agora.getTime() + validadeM);
+		Date now = new Date();
+		Date validity = new Date(now.getTime() + validityM);
 		
-		byte[] apiKeySecretByte = Base64.getEncoder().encode(segredo.getBytes());
-		Key segredoKey = Keys.hmacShaKeyFor(apiKeySecretByte);
+		byte[] apiKeySecretByte = Base64.getEncoder().encode(secret.getBytes());
+		Key secretKey = Keys.hmacShaKeyFor(apiKeySecretByte);
 		
 		return Jwts.builder()
 				.setSubject(username)
-				.setIssuedAt(agora)
-				.setExpiration(validade)
-				.signWith(segredoKey)
+				.setIssuedAt(now)
+				.setExpiration(validity)
+				.signWith(secretKey)
 				.compact();
 	}
 	
 	public boolean validateToken(String token) {
 		try {
-			byte[] apiKeySecretyByte = Base64.getEncoder().encode(segredo.getBytes());
-			Key segredoKey = Keys.hmacShaKeyFor(apiKeySecretyByte);
+			byte[] apiKeySecretyByte = Base64.getEncoder().encode(secret.getBytes());
+			Key secretKey = Keys.hmacShaKeyFor(apiKeySecretyByte);
 			
 			Jws<Claims> claims = Jwts.parser().setSigningKey(apiKeySecretyByte)
 				.parseClaimsJws(token);
@@ -49,8 +49,8 @@ public class JwtTokenUtil {
 	
 	public String getUsernameFromToken(String token) {
 		try {
-			byte[] apiKeySecretyByte = Base64.getEncoder().encode(segredo.getBytes());
-			Key segredoKey = Keys.hmacShaKeyFor(apiKeySecretyByte);
+			byte[] apiKeySecretyByte = Base64.getEncoder().encode(secret.getBytes());
+			Key secretKey = Keys.hmacShaKeyFor(apiKeySecretyByte);
 			
 			Jws<Claims> claims = Jwts.parser().setSigningKey(apiKeySecretyByte)
 				.parseClaimsJws(token);

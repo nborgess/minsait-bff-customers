@@ -31,11 +31,8 @@ public class CustomerController {
 	
 	@Operation(summary = "Grava o registro de Cliente")
 	@PostMapping
-	public ResponseEntity<Customer> save(@Valid @RequestBody Customer cliente) {
-		Customer newCustomer = customerService.save(cliente);
-		if(newCustomer == null) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer) {
+		Customer newCustomer = customerService.save(customer);
 		URI location = URI.create("/clientes/" + newCustomer.getId());
 	    return ResponseEntity.created(location).body(newCustomer);
 	}
@@ -44,22 +41,13 @@ public class CustomerController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Customer>> findById(@Valid @PathVariable Long id) {
 		Optional<Customer> customer = customerService.findById(id);
-		if(customer.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
 		return ResponseEntity.ok(customer);
 	}
 	
 	@Operation(summary = "Busca todos os registros de Clientes")
 	@GetMapping
-	public ResponseEntity<List<Customer>> findAllClientes() {
+	public ResponseEntity<List<Customer>> findAllCustomers() {
 		List<Customer> customers = customerService.findAll();
-		if(customers == null) {
-			return ResponseEntity.notFound().build();
-		}
-		if(customers.size() == 0) {
-			return ResponseEntity.notFound().build();
-		}
 		return ResponseEntity.ok(customers);
 	}
 	
@@ -67,9 +55,6 @@ public class CustomerController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Customer> update(@Valid @RequestBody Customer customer, @PathVariable Long id) {
 		Customer updCustomer = customerService.update(customer, id);
-		if(updCustomer == null) {
-			return ResponseEntity.notFound().build();
-		}
 		return ResponseEntity.ok(updCustomer);
 	}
 	
