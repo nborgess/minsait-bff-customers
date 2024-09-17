@@ -3,6 +3,8 @@ package br.com.plgs.AppClientes.configuration;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -17,19 +19,25 @@ public class JwtTokenUtil {
 	private String secret = "umSegredoMuitoLongoQueTemMaisDe256BitsParaSerSeguroComHMACSHA";
 	private long validityM = 3600000; 
 	
-	public String createToken(String username) {
-		Date now = new Date();
-		Date validity = new Date(now.getTime() + validityM);
-		
-		byte[] apiKeySecretByte = Base64.getEncoder().encode(secret.getBytes());
-		Key secretKey = Keys.hmacShaKeyFor(apiKeySecretByte);
-		
-		return Jwts.builder()
-				.setSubject(username)
-				.setIssuedAt(now)
-				.setExpiration(validity)
-				.signWith(secretKey)
-				.compact();
+	public Map<String, Object> createToken(String username) {
+	    Date now = new Date();
+	    Date validity = new Date(now.getTime() + validityM);
+
+	    byte[] apiKeySecretByte = Base64.getEncoder().encode(secret.getBytes());
+	    Key secretKey = Keys.hmacShaKeyFor(apiKeySecretByte);
+
+	    String token = Jwts.builder()
+	            .setSubject(username)
+	            .setIssuedAt(now)
+	            .setExpiration(validity)
+	            .signWith(secretKey)
+	            .compact();
+
+	    Map<String, Object> tokenResponse = new HashMap<>();
+	    tokenResponse.put("token", token);
+	    tokenResponse.put("expires_in", validityM / 1000);
+
+	    return tokenResponse;
 	}
 	
 	public boolean validateToken(String token) {
