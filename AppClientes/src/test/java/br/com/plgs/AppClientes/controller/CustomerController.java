@@ -48,7 +48,6 @@ public class CustomerController {
     void setUp(){
         MockitoAnnotations.openMocks(this);
     }
-
     @Test
     void testSaveCustomer() throws Exception {
         Customer customer = new Customer();
