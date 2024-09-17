@@ -42,7 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	    String token = request.getHeader("Authorization");
 	    
 	    if (token == null || !token.startsWith("Bearer ")) {
-	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 	        response.setContentType("application/json");
 	        response.getWriter().write("{\"error\": \"Necessario fornecer um token para acessar esta operacao.\"}");
 	        return; 
@@ -61,7 +61,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	        
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
 	    } else {
-	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 	        response.setContentType("application/json");
 	        response.getWriter().write("{\"error\": \"Token invalido ou expirado.\"}");
 	        return;
