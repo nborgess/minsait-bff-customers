@@ -1,5 +1,7 @@
 package br.com.plgs.AppClientes.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +17,9 @@ public class AuthController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@GetMapping("/token")
-	public ResponseEntity<?> createToken(@RequestParam String username){
-		String token = jwtTokenUtil.createToken(username);
-		return ResponseEntity.ok(token);
+	public ResponseEntity<?> createToken(@RequestParam String username) {
+	    Map<String, Object> tokenResponse = jwtTokenUtil.createToken(username);
+	    return ResponseEntity.ok(tokenResponse);
 	}
 	
 }

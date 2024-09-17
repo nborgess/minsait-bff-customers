@@ -22,28 +22,52 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	
 	@Override
 	protected void doFilterInternal(
-			HttpServletRequest request, 
-			HttpServletResponse response, 
-			FilterChain filterChain)
-			throws ServletException, IOException {
-		
-		String token = request.getHeader("Authorization");
-		if(token != null && token.startsWith("Bearer ")) {
-			token = token.substring(7);
-			if(jwtTokenUtil.validateToken(token)) {
-				String username = jwtTokenUtil.getUsernameFromToken(token);
-				
-				List<SimpleGrantedAuthority> authorities = 
-						List.of(new SimpleGrantedAuthority("USER"));
-				
-				Authentication authentication = new
-						UsernamePasswordAuthenticationToken(username, null, authorities);
-				
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-				
-			}
-		}
-		filterChain.doFilter(request, response);
-	}
+	        HttpServletRequest request, 
+	        HttpServletResponse response, 
+	        FilterChain filterChain)
+	        throws ServletException, IOException {
 
+	    String requestURI = request.getRequestURI();
+	    
+        if (requestURI.startsWith("/api/v3/api-docs") || 
+                requestURI.startsWith("/api/swagger-ui") || 
+                requestURI.startsWith("/api/swagger-resources") || 
+                requestURI.startsWith("/api/webjars") || 
+                requestURI.equals("/api/token")) {  
+	        
+	        filterChain.doFilter(request, response); 
+	        return;
+	    }
+
+	    String token = request.getHeader("Authorization");
+	    
+	    if (token == null || !token.startsWith("Bearer ")) {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.setContentType("application/json");
+	        response.getWriter().write("{\"error\": \"Necessario fornecer um token para acessar esta operacao.\"}");
+	        return; 
+	    }
+
+	    token = token.substring(7); 
+	    
+	    if (jwtTokenUtil.validateToken(token)) {
+	        String username = jwtTokenUtil.getUsernameFromToken(token);
+	        
+	        List<SimpleGrantedAuthority> authorities = 
+	                List.of(new SimpleGrantedAuthority("USER"));
+	        
+	        Authentication authentication = new
+	                UsernamePasswordAuthenticationToken(username, null, authorities);
+	        
+	        SecurityContextHolder.getContext().setAuthentication(authentication);
+	    } else {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.setContentType("application/json");
+	        response.getWriter().write("{\"error\": \"Token invalido ou expirado.\"}");
+	        return;
+	    }
+
+	    filterChain.doFilter(request, response);
+	}
+	
 }
