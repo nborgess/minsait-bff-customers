@@ -29,11 +29,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
 	    String requestURI = request.getRequestURI();
 	    
-	    if (requestURI.startsWith("/v3/api-docs") || 
-	            requestURI.startsWith("/swagger-ui") || 
-	            requestURI.startsWith("/swagger-resources") || 
-	            requestURI.startsWith("/webjars") || 
-	            requestURI.equals("/token")) {  
+        if (requestURI.startsWith("/api/v3/api-docs") || 
+                requestURI.startsWith("/api/swagger-ui") || 
+                requestURI.startsWith("/api/swagger-resources") || 
+                requestURI.startsWith("/api/webjars") || 
+                requestURI.equals("/api/token")) {  
 	        
 	        filterChain.doFilter(request, response); 
 	        return;
