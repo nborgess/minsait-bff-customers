@@ -1,0 +1,25 @@
+package br.com.plgs.AppClientes.model;
+
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Entity
+public class Address {
+	
+	private String zipCode;
+	private String address;
+	private String complement;
+	private String district;
+	private String city;
+	private String state;
+
+}

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CustomerControllerTest.testSaveCustomer" project="AppClientes" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.411" displayname="CustomerControllerTest" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]">
+    <testcase name="testSaveCustomer" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.411" displayname="testSaveCustomer()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testSaveCustomer()]"/>
+  </testsuite>
+</testrun>

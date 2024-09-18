@@ -24,7 +24,7 @@ public class OpenApiConfig {
 						)
 				.info(
 						new Info()
-							.title("App de controle de pessoas e seus contatos")
+							.title("App de controle de clientes")
 							.description("Este app faz o controle de cadastro de clientes.")
 							.contact(new Contact()
 										.name("Pedro Luiz Gomes Sampaio")

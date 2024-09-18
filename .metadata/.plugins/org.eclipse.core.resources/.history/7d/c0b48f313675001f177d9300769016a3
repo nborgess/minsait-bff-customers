@@ -1,0 +1,49 @@
+package br.com.plgs.AppClientes.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Entity
+@Table(name = "tb_endereco")
+public class Address {
+	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
+	@NotBlank
+	private String zipCode;
+	
+	@NotBlank
+	private String address;
+	
+	@NotBlank
+	private String complement;
+	
+	@NotBlank
+	private String district;
+	
+	@NotBlank
+	private String city;
+	
+	@NotBlank
+	private String state;
+	
+    @OneToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+}

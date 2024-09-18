@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CustomerControllerTest" project="AppClientes" tests="5" started="5" failures="2" errors="0" ignored="0">
+  <testsuite name="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.707" displayname="CustomerControllerTest" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]">
+    <testcase name="testFindById" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.269" displayname="testFindById()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testFindById()]"/>
+    <testcase name="testUpdateCustomer" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.346" displayname="testUpdateCustomer()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testUpdateCustomer()]">
+      <failure>java.lang.AssertionError: No value at JSON path "$.address.cep"&#13;
+	at org.springframework.test.util.JsonPathExpectationsHelper.evaluateJsonPath(JsonPathExpectationsHelper.java:302)&#13;
+	at org.springframework.test.util.JsonPathExpectationsHelper.assertValue(JsonPathExpectationsHelper.java:99)&#13;
+	at org.springframework.test.web.servlet.result.JsonPathResultMatchers.lambda$value$2(JsonPathResultMatchers.java:111)&#13;
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)&#13;
+	at br.com.plgs.AppClientes.controller.CustomerControllerTest.testUpdateCustomer(CustomerControllerTest.java:150)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)&#13;
+Caused by: com.jayway.jsonpath.PathNotFoundException: No results for path: $['address']['cep']&#13;
+&#13;
+</failure>
+    </testcase>
+    <testcase name="testSaveCustomer" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.033" displayname="testSaveCustomer()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testSaveCustomer()]">
+      <failure>java.lang.AssertionError: No value at JSON path "$.address.cep"&#13;
+	at org.springframework.test.util.JsonPathExpectationsHelper.evaluateJsonPath(JsonPathExpectationsHelper.java:302)&#13;
+	at org.springframework.test.util.JsonPathExpectationsHelper.assertValue(JsonPathExpectationsHelper.java:99)&#13;
+	at org.springframework.test.web.servlet.result.JsonPathResultMatchers.lambda$value$2(JsonPathResultMatchers.java:111)&#13;
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)&#13;
+	at br.com.plgs.AppClientes.controller.CustomerControllerTest.testSaveCustomer(CustomerControllerTest.java:83)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)&#13;
+Caused by: com.jayway.jsonpath.PathNotFoundException: No results for path: $['address']['cep']&#13;
+&#13;
+</failure>
+    </testcase>
+    <testcase name="testDeleteCustomer" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.026" displayname="testDeleteCustomer()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testDeleteCustomer()]"/>
+    <testcase name="testFindAllCustomers" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.021" displayname="testFindAllCustomers()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testFindAllCustomers()]"/>
+  </testsuite>
+</testrun>

@@ -1,5 +1,0 @@
-package br.com.plgs.AppClientes.repository;
-
-public interface ClienteRepository {
-
-}
