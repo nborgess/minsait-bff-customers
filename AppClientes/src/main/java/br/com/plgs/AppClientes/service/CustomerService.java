@@ -68,7 +68,7 @@ public class CustomerService implements CustomerServiceInterface {
 
 	    updCustomer.setName(customer.getName());
 	    updCustomer.setEmail(customer.getEmail());
-	    updCustomer.setNumberPhone(customer.getNumberPhone());
+	    updCustomer.setCellPhone(customer.getCellPhone());
 	    updCustomer.setNumberHouse(customer.getNumberHouse());
 	    updCustomer.setZipCode(customer.getZipCode());
 

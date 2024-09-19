@@ -1,0 +1,11 @@
+package br.com.plgs.AppClientes.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.com.plgs.AppClientes.model.User;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+	
+	User findByUsername(String username);
+
+}

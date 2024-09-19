@@ -64,7 +64,7 @@ public class CustomerControllerTest {
         customer.setId(1L);
         customer.setName("Teste");
         customer.setEmail("teste@example.com");
-        customer.setNumberPhone("+55 11 95435-5435");
+        customer.setCellPhone("+55 11 95435-5435");
         customer.setNumberHouse(155);
         customer.setZipCode("07341418");
         customer.setAddress(address);
@@ -132,7 +132,7 @@ public class CustomerControllerTest {
         customer.setId(1L);
         customer.setName("Teste Novo");
         customer.setEmail("testenovo@example.com");
-        customer.setNumberPhone("+55 11 11111-1111");
+        customer.setCellPhone("+55 11 11111-1111");
         customer.setNumberHouse(155);
         customer.setZipCode("07341418");
         customer.setAddress(address);

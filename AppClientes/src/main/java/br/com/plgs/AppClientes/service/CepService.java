@@ -1,5 +1,6 @@
 package br.com.plgs.AppClientes.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -10,7 +11,8 @@ import br.com.plgs.AppClientes.model.Address;
 @Service
 public class CepService {
 
-    private final String viaCepUrl = "https://viacep.com.br/ws/";
+	@Value("${viacep.url}")
+    private String viaCepUrl;
 
     public Address searchCep(String cep) {
         String url = viaCepUrl + cep + "/json";

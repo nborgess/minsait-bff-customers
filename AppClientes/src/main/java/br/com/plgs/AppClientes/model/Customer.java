@@ -1,6 +1,6 @@
 package br.com.plgs.AppClientes.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -46,7 +46,7 @@ public class Customer {
 	@NotBlank(message = "O telefone não pode ser nulo ou vazio.")
     @Pattern(regexp = "^\\+\\d{1,3} \\d{1,3} \\d{4,5}-\\d{4}$", message = "Telefone deve seguir o formato internacional.")
     @Column(nullable = false)
-	private String numberPhone;
+	private String cellPhone;
 	
 	@NotNull(message = "O número da residência não pode ser nulo.")
     @Column(nullable = false)
@@ -57,7 +57,7 @@ public class Customer {
 	private String zipCode;
     
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private Address address;
   
 }
