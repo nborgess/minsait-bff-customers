@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.plgs.AppClientes.utils.RequestCustomer;
+import br.com.plgs.AppClientes.utils.ResponseCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,36 +30,43 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@Operation(summary = "Grava o registro de Cliente")
 	@PostMapping
-	public ResponseEntity<Customer> save(@Valid @RequestBody Customer customer) {
-		Customer newCustomer = customerService.save(customer);
-		URI location = URI.create("/clientes/" + newCustomer.getId());
-	    return ResponseEntity.created(location).body(newCustomer);
+	public ResponseEntity<ResponseCustomer> save(@Valid @RequestBody RequestCustomer requestCustomer) {
+		// Chama o serviço passando o RequestCustomer
+		ResponseCustomer responseCustomer = customerService.save(requestCustomer);
+
+		// Cria a URI para o novo cliente
+		URI location = URI.create("/clientes/" + responseCustomer.getId());
+		return ResponseEntity.created(location).body(responseCustomer);
 	}
-	
+
+
 	@Operation(summary = "Busca registro pelo ID do Cliente")
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Customer>> findById(@Valid @PathVariable Long id) {
-		Optional<Customer> customer = customerService.findById(id);
-		return ResponseEntity.ok(customer);
+	public ResponseEntity<Optional<ResponseCustomer>> findById(@Valid @PathVariable Long id) {
+		Optional<ResponseCustomer> responseCustomer = customerService.findById(id);
+		return ResponseEntity.ok(responseCustomer);
 	}
-	
+
+
 	@Operation(summary = "Busca todos os registros de Clientes")
 	@GetMapping
-	public ResponseEntity<List<Customer>> findAllCustomers() {
-		List<Customer> customers = customerService.findAll();
-		return ResponseEntity.ok(customers);
+	public ResponseEntity<List<ResponseCustomer>> findAllCustomers() {
+		List<ResponseCustomer> responseCustomers = customerService.findAll();
+		return ResponseEntity.ok(responseCustomers);
 	}
-	
+
+
 	@Operation(summary = "Atualiza o registro do Cliente por ID")
 	@PutMapping("/{id}")
-	public ResponseEntity<Customer> update(@Valid @RequestBody Customer customer, @PathVariable Long id) {
-		Customer updCustomer = customerService.update(customer, id);
-		return ResponseEntity.ok(updCustomer);
+	public ResponseEntity<ResponseCustomer> update(@Valid @RequestBody RequestCustomer requestCustomer, @PathVariable Long id) {
+		ResponseCustomer responseCustomer = customerService.update(requestCustomer, id);
+		return ResponseEntity.ok(responseCustomer);
 	}
-	
+
+
 	@Operation(summary = "Deleta o registro do Cliente por ID")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@Valid @PathVariable Long id) {

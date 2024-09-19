@@ -46,7 +46,7 @@ public class Customer {
 	@NotBlank(message = "O telefone não pode ser nulo ou vazio.")
     @Pattern(regexp = "^\\+\\d{1,3} \\d{1,3} \\d{4,5}-\\d{4}$", message = "Telefone deve seguir o formato internacional.")
     @Column(nullable = false)
-	private String numberPhone;
+	private String cellPhone;
 	
 	@NotNull(message = "O número da residência não pode ser nulo.")
     @Column(nullable = false)
@@ -61,3 +61,4 @@ public class Customer {
     private Address address;
   
 }
+
