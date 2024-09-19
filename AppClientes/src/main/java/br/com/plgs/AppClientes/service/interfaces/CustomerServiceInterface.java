@@ -4,13 +4,22 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.plgs.AppClientes.model.Customer;
+import br.com.plgs.AppClientes.utils.RequestCustomer;
+import br.com.plgs.AppClientes.utils.ResponseCustomer;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface CustomerServiceInterface {
-	
-	Customer save(Customer customer);
-	Optional<Customer> findById(Long id);
-	List<Customer> findAll();
-	Customer update(Customer customer, Long id);
-	void delete(Long id);
 
+	ResponseCustomer save(RequestCustomer requestCustomer);
+
+	Optional<ResponseCustomer> findById(Long id);
+
+	List<ResponseCustomer> findAll();
+
+	ResponseCustomer update(RequestCustomer requestCustomer, Long id);
+
+	void delete(Long id);
 }
+
