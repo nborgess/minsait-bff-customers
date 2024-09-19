@@ -42,7 +42,6 @@ public class ResponseCustomer {
     @JsonManagedReference
     private Address address;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
