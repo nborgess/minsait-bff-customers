@@ -1,0 +1,32 @@
+package br.com.plgs.AppClientes.controller;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.plgs.AppClientes.configuration.JwtTokenUtil;
+
+@RestController
+public class AuthController {
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @PostMapping("/api/auth/login")
+    public ResponseEntity<?> createToken(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        if (username.equals("usuario") && password.equals("senha")) {
+            Map<String, Object> tokenResponse = jwtTokenUtil.createToken(username);
+            return ResponseEntity.ok(tokenResponse);
+        } else {
+            return ResponseEntity.status(401).body(Map.of("erro", "Credenciais inválidas", "mensagem", "Nome de usuário ou senha incorretos."));
+        }
+    }
+	
+}

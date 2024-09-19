@@ -1,6 +1,6 @@
 package br.com.plgs.AppClientes.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -57,8 +57,7 @@ public class Customer {
 	private String zipCode;
     
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonManagedReference
     private Address address;
   
 }
-

@@ -1,0 +1,13 @@
+package br.com.plgs.AppClientes.dto;
+
+public class RegisterUserDto {
+	
+	private String username;
+	
+	private String password;
+	
+	private String name;
+	
+	private String roles;
+
+}

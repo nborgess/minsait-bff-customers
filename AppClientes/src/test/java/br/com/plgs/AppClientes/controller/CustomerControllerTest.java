@@ -1,11 +1,13 @@
 package br.com.plgs.AppClientes.controller;
 
-import br.com.plgs.AppClientes.model.Address;
-import br.com.plgs.AppClientes.model.Customer;
-import br.com.plgs.AppClientes.service.CustomerService;
-import br.com.plgs.AppClientes.utils.RequestCustomer;
-import br.com.plgs.AppClientes.utils.ResponseCustomer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+
+import java.util.Collections;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,12 +22,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import java.util.Collections;
-import java.util.Optional;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.plgs.AppClientes.model.Address;
+import br.com.plgs.AppClientes.service.CustomerService;
+import br.com.plgs.AppClientes.utils.RequestCustomer;
+import br.com.plgs.AppClientes.utils.ResponseCustomer;
 
 @WebMvcTest(CustomerController.class)
 public class CustomerControllerTest {
@@ -54,28 +56,15 @@ public class CustomerControllerTest {
 
     @Test
     void testSaveCustomer() throws Exception {
-        // Cria um endereço
-        Address address = new Address();
+
+    	Address address = new Address();
         address.setZipCode("07341418");
         address.setAddress("Rua Teste");
         address.setComplement("Apto 101");
         address.setDistrict("Bairro Teste");
         address.setCity("Cidade Teste");
         address.setState("SP");
-<<<<<<< HEAD
-    	
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("Teste");
-        customer.setEmail("teste@example.com");
-        customer.setCellPhone("+55 11 95435-5435");
-        customer.setNumberHouse(155);
-        customer.setZipCode("07341418");
-        customer.setAddress(address);
-=======
->>>>>>> 6b6e4452115bc72d540c48213f64e2a090fba734
 
-        // Cria um RequestCustomer
         RequestCustomer requestCustomer = new RequestCustomer();
         requestCustomer.setName("Teste");
         requestCustomer.setEmail("teste@example.com");
@@ -83,7 +72,6 @@ public class CustomerControllerTest {
         requestCustomer.setNumberHouse(155);
         requestCustomer.setZipCode("07341418");
 
-        // Cria um ResponseCustomer
         ResponseCustomer responseCustomer = new ResponseCustomer();
         responseCustomer.setId(1L);
         responseCustomer.setName(requestCustomer.getName());
@@ -91,12 +79,10 @@ public class CustomerControllerTest {
         responseCustomer.setCellPhone(requestCustomer.getCellPhone());
         responseCustomer.setNumberHouse(requestCustomer.getNumberHouse());
         responseCustomer.setZipCode(requestCustomer.getZipCode());
-        responseCustomer.setAddress(address); // Se necessário
+        responseCustomer.setAddress(address); 
 
-        // Configura o comportamento do serviço
         given(customerService.save(any(RequestCustomer.class))).willReturn(responseCustomer);
 
-        // Executa o teste
         mockMvc.perform(MockMvcRequestBuilders.post("/api/clientes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, createJwtToken())
@@ -106,68 +92,55 @@ public class CustomerControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Teste"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("teste@example.com"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.zipCode").value("07341418"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.zipCode").value("07341418"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.address").value("Rua Teste"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.complement").value("Apto 101"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.district").value("Bairro Teste"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.city").value("Cidade Teste"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.state").value("SP"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.cep").value("07341418"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.logradouro").value("Rua Teste"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.complemento").value("Apto 101"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.bairro").value("Bairro Teste"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.localidade").value("Cidade Teste"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.uf").value("SP"));
     }
 
     @Test
     void testFindById() throws Exception {
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("Teste");
+        ResponseCustomer responseCustomer = new ResponseCustomer();
+        responseCustomer.setId(1L);
+        responseCustomer.setName("Teste");
 
-        given(customerService.findById(anyLong())).willReturn(Optional.of(customer));
+        given(customerService.findById(anyLong())).willReturn(Optional.of(responseCustomer));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/clientes/1")
                         .accept(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, createJwtToken()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Teste")); 
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Teste"));
     }
 
     @Test
     void testFindAllCustomers() throws Exception {
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("Teste");
+        ResponseCustomer responseCustomer = new ResponseCustomer();
+        responseCustomer.setId(1L);
+        responseCustomer.setName("Teste");
 
-        given(customerService.findAll()).willReturn(Collections.singletonList(customer));
+        given(customerService.findAll()).willReturn(Collections.singletonList(responseCustomer));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/clientes")
                         .accept(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, createJwtToken()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Teste")); 
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Teste"));
     }
 
     @Test
     void testUpdateCustomer() throws Exception {
-        // Cria um endereço
-        Address address = new Address();
+
+    	Address address = new Address();
         address.setZipCode("07341418");
         address.setAddress("Rua Teste");
         address.setComplement("Apto 101");
         address.setDistrict("Bairro Teste");
         address.setCity("Cidade Teste");
         address.setState("SP");
-<<<<<<< HEAD
-    	
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("Teste Novo");
-        customer.setEmail("testenovo@example.com");
-        customer.setCellPhone("+55 11 11111-1111");
-        customer.setNumberHouse(155);
-        customer.setZipCode("07341418");
-        customer.setAddress(address);
-=======
->>>>>>> 6b6e4452115bc72d540c48213f64e2a090fba734
 
-        // Cria um RequestCustomer para atualização
         RequestCustomer requestCustomer = new RequestCustomer();
         requestCustomer.setName("Teste Novo");
         requestCustomer.setEmail("testenovo@example.com");
@@ -175,7 +148,6 @@ public class CustomerControllerTest {
         requestCustomer.setNumberHouse(155);
         requestCustomer.setZipCode("07341418");
 
-        // Cria um ResponseCustomer para simular a resposta do serviço
         ResponseCustomer responseCustomer = new ResponseCustomer();
         responseCustomer.setId(1L);
         responseCustomer.setName(requestCustomer.getName());
@@ -183,12 +155,10 @@ public class CustomerControllerTest {
         responseCustomer.setCellPhone(requestCustomer.getCellPhone());
         responseCustomer.setNumberHouse(requestCustomer.getNumberHouse());
         responseCustomer.setZipCode(requestCustomer.getZipCode());
-        responseCustomer.setAddress(address); // Se necessário
+        responseCustomer.setAddress(address); 
 
-        // Configura o comportamento do serviço
         given(customerService.update(any(RequestCustomer.class), anyLong())).willReturn(responseCustomer);
 
-        // Executa o teste
         mockMvc.perform(MockMvcRequestBuilders.put("/api/clientes/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestCustomer))
@@ -197,12 +167,12 @@ public class CustomerControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Teste Novo"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("testenovo@example.com"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.zipCode").value("07341418"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.zipCode").value("07341418"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.address").value("Rua Teste"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.complement").value("Apto 101"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.district").value("Bairro Teste"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.city").value("Cidade Teste"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address.state").value("SP"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.cep").value("07341418"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.logradouro").value("Rua Teste"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.complemento").value("Apto 101"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.bairro").value("Bairro Teste"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.localidade").value("Cidade Teste"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address.uf").value("SP"));
     }
     @Test
     void testDeleteCustomer() throws Exception {

@@ -4,8 +4,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.plgs.AppClientes.utils.RequestCustomer;
-import br.com.plgs.AppClientes.utils.ResponseCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.plgs.AppClientes.exception.SuccessResponse;
-import br.com.plgs.AppClientes.model.Customer;
 import br.com.plgs.AppClientes.service.CustomerService;
+import br.com.plgs.AppClientes.utils.RequestCustomer;
+import br.com.plgs.AppClientes.utils.ResponseCustomer;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
@@ -34,10 +33,9 @@ public class CustomerController {
 	@Operation(summary = "Grava o registro de Cliente")
 	@PostMapping
 	public ResponseEntity<ResponseCustomer> save(@Valid @RequestBody RequestCustomer requestCustomer) {
-		// Chama o serviço passando o RequestCustomer
+
 		ResponseCustomer responseCustomer = customerService.save(requestCustomer);
 
-		// Cria a URI para o novo cliente
 		URI location = URI.create("/clientes/" + responseCustomer.getId());
 		return ResponseEntity.created(location).body(responseCustomer);
 	}

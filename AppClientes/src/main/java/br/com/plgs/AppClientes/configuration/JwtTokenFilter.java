@@ -1,73 +1,76 @@
 package br.com.plgs.AppClientes.configuration;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import java.io.IOException;
+
+@Component
 public class JwtTokenFilter extends OncePerRequestFilter {
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-	
-	@Override
-	protected void doFilterInternal(
-	        HttpServletRequest request, 
-	        HttpServletResponse response, 
-	        FilterChain filterChain)
-	        throws ServletException, IOException {
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
 
-	    String requestURI = request.getRequestURI();
-	    
-        if (requestURI.startsWith("/api/v3/api-docs") || 
-                requestURI.startsWith("/api/swagger-ui") || 
-                requestURI.startsWith("/api/swagger-resources") || 
-                requestURI.startsWith("/api/webjars") || 
-                requestURI.equals("/api/token")) {  
-	        
-	        filterChain.doFilter(request, response); 
-	        return;
-	    }
+    public JwtTokenFilter(
+    	JwtTokenUtil jwtTokenUtil,
+        UserDetailsService userDetailsService,
+        HandlerExceptionResolver handlerExceptionResolver
+    ) {
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
+    }
 
-	    String token = request.getHeader("Authorization");
-	    
-	    if (token == null || !token.startsWith("Bearer ")) {
-	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	        response.setContentType("application/json");
-	        response.getWriter().write("{\"error\": \"Necessario fornecer um token para acessar esta operacao.\"}");
-	        return; 
-	    }
+    @Override
+    protected void doFilterInternal(
+        @NonNull HttpServletRequest request,
+        @NonNull HttpServletResponse response,
+        @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+        final String authHeader = request.getHeader("Authorization");
 
-	    token = token.substring(7); 
-	    
-	    if (jwtTokenUtil.validateToken(token)) {
-	        String username = jwtTokenUtil.getUsernameFromToken(token);
-	        
-	        List<SimpleGrantedAuthority> authorities = 
-	                List.of(new SimpleGrantedAuthority("USER"));
-	        
-	        Authentication authentication = new
-	                UsernamePasswordAuthenticationToken(username, null, authorities);
-	        
-	        SecurityContextHolder.getContext().setAuthentication(authentication);
-	    } else {
-	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	        response.setContentType("application/json");
-	        response.getWriter().write("{\"error\": \"Token invalido ou expirado.\"}");
-	        return;
-	    }
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-	    filterChain.doFilter(request, response);
-	}
-	
+        try {
+            final String jwt = authHeader.substring(7);
+            final String userEmail = jwtTokenUtil.extractUsername(jwt);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (userEmail != null && authentication == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+                if (jwtTokenUtil.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+
+            filterChain.doFilter(request, response);
+        } catch (Exception exception) {
+            handlerExceptionResolver.resolveException(request, response, null, exception);
+        }
+    }
 }

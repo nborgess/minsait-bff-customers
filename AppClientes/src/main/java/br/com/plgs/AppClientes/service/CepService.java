@@ -11,11 +11,7 @@ import br.com.plgs.AppClientes.model.Address;
 @Service
 public class CepService {
 
-<<<<<<< HEAD
-	@Value("${viacep.url}")
-=======
     @Value("${url.cep}")
->>>>>>> 6b6e4452115bc72d540c48213f64e2a090fba734
     private String viaCepUrl;
 
     public Address searchCep(String cep) {
