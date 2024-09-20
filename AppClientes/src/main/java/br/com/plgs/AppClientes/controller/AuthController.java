@@ -14,6 +14,7 @@ import br.com.plgs.AppClientes.dto.RegisterUserDto;
 import br.com.plgs.AppClientes.model.User;
 import br.com.plgs.AppClientes.service.AuthService;
 import br.com.plgs.AppClientes.utils.LoginResponse;
+import jakarta.validation.Valid;
 
 @RequestMapping("/auth")
 @RestController
@@ -26,14 +27,14 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
         User registeredUser = authService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = authService.authenticate(loginUserDto);
 
         String jwtToken = jwtTokenUtil.generateToken(authenticatedUser);

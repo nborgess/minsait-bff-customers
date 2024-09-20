@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,12 +30,15 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Long id;
 
+    @NotBlank(message = "O Username não pode ser nulo ou vazio.")
     @Column(unique = true, nullable = false)
     private String username;
-
+    
+    @NotBlank(message = "A senha não pode ser nula ou vazia.")
     @Column(nullable = false)
     private String password;
 
+    @NotBlank(message = "O nome não pode ser nulo ou vazio.")
     @Column(nullable = false)
     private String name;
 
