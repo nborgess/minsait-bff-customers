@@ -1,7 +1,6 @@
 package br.com.plgs.AppClientes.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +16,8 @@ public class RegisterUserDto {
 	
 	@NotBlank(message = "O nome não pode ser nulo ou vazio.")
 	private String name;
-		
-	@NotNull(message = "A role não pode ser nula.")
+	
+	@NotBlank(message = "A função no sistema não pode ser nula ou vazia.")
 	private String roles;
 
 }
