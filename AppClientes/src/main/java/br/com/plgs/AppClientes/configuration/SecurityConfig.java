@@ -34,7 +34,7 @@ public class SecurityConfig {
         http.csrf().disable()
             .authorizeHttpRequests()
                 .requestMatchers("/auth/**").permitAll() 
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll() // Permite acesso ao Swagger
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll() 
                 .anyRequest().authenticated()
                 .and()
             .sessionManagement()

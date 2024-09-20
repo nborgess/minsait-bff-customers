@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.plgs.AppClientes.configuration.JwtTokenUtil;
 import br.com.plgs.AppClientes.model.Address;
 import br.com.plgs.AppClientes.service.CustomerService;
 import br.com.plgs.AppClientes.utils.RequestCustomer;
@@ -37,6 +38,9 @@ public class CustomerControllerTest {
 
     @MockBean
     private CustomerService customerService;
+    
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
 
     @InjectMocks
     private CustomerController customerController; 

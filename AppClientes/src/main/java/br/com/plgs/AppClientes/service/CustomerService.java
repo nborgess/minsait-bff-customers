@@ -56,7 +56,7 @@ public class CustomerService implements CustomerServiceInterface {
 		responseCustomer.setCellPhone(savedCustomer.getCellPhone());
 		responseCustomer.setNumberHouse(savedCustomer.getNumberHouse());
 		responseCustomer.setZipCode(savedCustomer.getZipCode());
-		responseCustomer.setAddress(savedCustomer.getAddress()); // Se necessário
+		responseCustomer.setAddress(savedCustomer.getAddress()); 
 
 		return responseCustomer;
 	}

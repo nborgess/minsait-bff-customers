@@ -1,6 +1,8 @@
 package br.com.plgs.AppClientes.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +19,11 @@ import br.com.plgs.AppClientes.utils.LoginResponse;
 @RestController
 public class AuthController {
 	
-    private final JwtTokenUtil jwtTokenUtil;
+	@Autowired
+    private JwtTokenUtil jwtTokenUtil;
     
-    private final AuthService authService;
-
-    public AuthController(JwtTokenUtil jwtTokenUtil, AuthService authService) {
-        this.jwtTokenUtil = jwtTokenUtil;
-        this.authService = authService;
-    }
+	@Autowired
+    private AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
@@ -43,4 +42,12 @@ public class AuthController {
 
         return ResponseEntity.ok(loginResponse);
     }
+    
+    @GetMapping("/me")
+    public ResponseEntity<User> authenticatedUser() {
+    	
+        User currentUser = authService.getCurrentUser();
+        return ResponseEntity.ok(currentUser);
+    }
+    
 }

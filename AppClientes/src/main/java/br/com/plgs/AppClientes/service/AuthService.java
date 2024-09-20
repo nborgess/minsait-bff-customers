@@ -1,33 +1,31 @@
 package br.com.plgs.AppClientes.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.plgs.AppClientes.dto.LoginUserDto;
 import br.com.plgs.AppClientes.dto.RegisterUserDto;
+import br.com.plgs.AppClientes.exception.InvalidCredentialsException;
+import br.com.plgs.AppClientes.exception.TokenExpiredException;
 import br.com.plgs.AppClientes.model.User;
 import br.com.plgs.AppClientes.repository.UserRepository;
 
 @Service
 public class AuthService {
 	
-    private final UserRepository userRepository;
+	@Autowired
+    private UserRepository userRepository;
+	
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
-    private final PasswordEncoder passwordEncoder;
-    
-    private final AuthenticationManager authenticationManager;
-
-    public AuthService(
-        UserRepository userRepository,
-        AuthenticationManager authenticationManager,
-        PasswordEncoder passwordEncoder
-    ) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public User signup(RegisterUserDto input) {
         User user = new User()
@@ -40,14 +38,28 @@ public class AuthService {
     }
 
     public User authenticate(LoginUserDto input) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.getUsername(),
-                        input.getPassword()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            input.getUsername(),
+                            input.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            throw new InvalidCredentialsException("Nome de usuário ou senha incorretos.");
+        }
 
         return userRepository.findByUsername(input.getUsername())
-                .orElseThrow();
+                .orElseThrow(() -> new InvalidCredentialsException("Nome de usuário ou senha incorretos."));
+    }
+    
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new TokenExpiredException("Token de autenticação inválido ou expirado.");
+        }
+        
+        return (User) authentication.getPrincipal();
     }
 }

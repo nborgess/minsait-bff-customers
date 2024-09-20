@@ -37,4 +37,18 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse("Erro de Validação", ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+    
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Credenciais inválidas", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+    
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> handleTokenExpiredException(TokenExpiredException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("Não autorizado", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
 }
