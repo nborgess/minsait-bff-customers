@@ -33,7 +33,7 @@ public class CustomerController {
 
 	@Operation(summary = "Grava o registro de Cliente")
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	public ResponseEntity<ResponseCustomer> save(@Valid @RequestBody RequestCustomer requestCustomer) {
 		ResponseCustomer responseCustomer = customerService.save(requestCustomer);
 		URI location = URI.create("/clientes/" + responseCustomer.getId());
@@ -61,7 +61,7 @@ public class CustomerController {
 
 	@Operation(summary = "Atualiza o registro do Cliente por ID")
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	public ResponseEntity<ResponseCustomer> update(@Valid @RequestBody RequestCustomer requestCustomer, @PathVariable Long id) {
 		ResponseCustomer responseCustomer = customerService.update(requestCustomer, id);
 		return ResponseEntity.ok(responseCustomer);

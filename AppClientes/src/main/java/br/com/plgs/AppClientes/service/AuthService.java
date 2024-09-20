@@ -30,6 +30,10 @@ public class AuthService {
 
     public User signup(RegisterUserDto input) {
     	
+        if (userRepository.findByUsername(input.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("O nome de usuário já está em uso.");
+        }
+    	
         String roles = input.getRoles().toUpperCase();
         
         if (!roles.equals("ADMIN") && !roles.equals("USER")) {
