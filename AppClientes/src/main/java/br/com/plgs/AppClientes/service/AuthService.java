@@ -12,6 +12,7 @@ import br.com.plgs.AppClientes.dto.LoginUserDto;
 import br.com.plgs.AppClientes.dto.RegisterUserDto;
 import br.com.plgs.AppClientes.exception.InvalidCredentialsException;
 import br.com.plgs.AppClientes.exception.TokenExpiredException;
+import br.com.plgs.AppClientes.model.Roles;
 import br.com.plgs.AppClientes.model.User;
 import br.com.plgs.AppClientes.repository.UserRepository;
 
@@ -28,11 +29,18 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     public User signup(RegisterUserDto input) {
+    	
+        String roles = input.getRoles().toUpperCase();
+        
+        if (!roles.equals("ADMIN") && !roles.equals("USER")) {
+            throw new IllegalArgumentException("Deve ser 'ADMIN' ou 'USER'.");
+        }
+    	
         User user = new User()
                 .setUsername(input.getUsername())
                 .setPassword(passwordEncoder.encode(input.getPassword()))
                 .setName(input.getName())
-                .setRoles(input.getRoles());
+                .setRoles(Roles.valueOf(roles));
 
         return userRepository.save(user);
     }

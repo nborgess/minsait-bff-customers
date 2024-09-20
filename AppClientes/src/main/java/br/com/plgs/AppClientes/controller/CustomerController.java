@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,10 +33,9 @@ public class CustomerController {
 
 	@Operation(summary = "Grava o registro de Cliente")
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ResponseCustomer> save(@Valid @RequestBody RequestCustomer requestCustomer) {
-
 		ResponseCustomer responseCustomer = customerService.save(requestCustomer);
-
 		URI location = URI.create("/clientes/" + responseCustomer.getId());
 		return ResponseEntity.created(location).body(responseCustomer);
 	}
@@ -43,6 +43,7 @@ public class CustomerController {
 
 	@Operation(summary = "Busca registro pelo ID do Cliente")
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	public ResponseEntity<Optional<ResponseCustomer>> findById(@Valid @PathVariable Long id) {
 		Optional<ResponseCustomer> responseCustomer = customerService.findById(id);
 		return ResponseEntity.ok(responseCustomer);
@@ -51,6 +52,7 @@ public class CustomerController {
 
 	@Operation(summary = "Busca todos os registros de Clientes")
 	@GetMapping
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	public ResponseEntity<List<ResponseCustomer>> findAllCustomers() {
 		List<ResponseCustomer> responseCustomers = customerService.findAll();
 		return ResponseEntity.ok(responseCustomers);
@@ -59,6 +61,7 @@ public class CustomerController {
 
 	@Operation(summary = "Atualiza o registro do Cliente por ID")
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ResponseCustomer> update(@Valid @RequestBody RequestCustomer requestCustomer, @PathVariable Long id) {
 		ResponseCustomer responseCustomer = customerService.update(requestCustomer, id);
 		return ResponseEntity.ok(responseCustomer);
@@ -67,6 +70,7 @@ public class CustomerController {
 
 	@Operation(summary = "Deleta o registro do Cliente por ID")
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> delete(@Valid @PathVariable Long id) {
 		customerService.delete(id);
 		SuccessResponse response = new SuccessResponse("Cliente removido com sucesso.");

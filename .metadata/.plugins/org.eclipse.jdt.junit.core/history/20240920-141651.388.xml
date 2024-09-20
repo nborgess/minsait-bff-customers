@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CustomerControllerTest" project="AppClientes" tests="5" started="5" failures="0" errors="0" ignored="0">
+  <testsuite name="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.475" displayname="CustomerControllerTest" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]">
+    <testcase name="testFindById" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.3" displayname="testFindById()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testFindById()]"/>
+    <testcase name="testUpdateCustomer" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.107" displayname="testUpdateCustomer()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testUpdateCustomer()]"/>
+    <testcase name="testSaveCustomer" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.023" displayname="testSaveCustomer()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testSaveCustomer()]"/>
+    <testcase name="testDeleteCustomer" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.021" displayname="testDeleteCustomer()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testDeleteCustomer()]"/>
+    <testcase name="testFindAllCustomers" classname="br.com.plgs.AppClientes.controller.CustomerControllerTest" time="0.014" displayname="testFindAllCustomers()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.CustomerControllerTest]/[method:testFindAllCustomers()]"/>
+  </testsuite>
+</testrun>

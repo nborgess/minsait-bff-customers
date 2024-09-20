@@ -2,6 +2,7 @@ package br.com.plgs.AppClientes.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,5 +51,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTokenExpiredException(TokenExpiredException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Não autorizado", ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+    
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
+    	ErrorResponse errorResponse = new ErrorResponse("Não autorizado", "Você não tem permissão para acessar este recurso.");
+    	return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 }
