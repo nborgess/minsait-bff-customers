@@ -37,4 +37,5 @@
     <fullyQualifiedTypeName name="java.nio.charset.IllegalCharsetNameException"/>
     <fullyQualifiedTypeName name="lombok.Getter"/>
     <fullyQualifiedTypeName name="lombok.Setter"/>
+    <fullyQualifiedTypeName name="br.com.plgs.AppClientes.model.Roles"/>
 </qualifiedTypeNameHistroy>

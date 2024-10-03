@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="AuthControllerTest" project="AppClientes" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="br.com.plgs.AppClientes.controller.AuthControllerTest" time="0.104" displayname="AuthControllerTest" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.AuthControllerTest]">
-    <testcase name="testLogin" classname="br.com.plgs.AppClientes.controller.AuthControllerTest" time="0.097" displayname="testLogin()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.AuthControllerTest]/[method:testLogin()]"/>
-    <testcase name="testSignup" classname="br.com.plgs.AppClientes.controller.AuthControllerTest" time="0.003" displayname="testSignup()" uniqueid="[engine:junit-jupiter]/[class:br.com.plgs.AppClientes.controller.AuthControllerTest]/[method:testSignup()]"/>
-  </testsuite>
-</testrun>
