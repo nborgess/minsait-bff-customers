@@ -72,7 +72,7 @@ public class CustomerControllerTest {
         RequestCustomer requestCustomer = new RequestCustomer();
         requestCustomer.setName("Teste");
         requestCustomer.setEmail("teste@example.com");
-        requestCustomer.setCellPhone("+55 11 95435-5435");
+        requestCustomer.setCellPhone("(11) 95435-5435");
         requestCustomer.setNumberHouse(155);
         requestCustomer.setZipCode("07341418");
 
@@ -148,7 +148,7 @@ public class CustomerControllerTest {
         RequestCustomer requestCustomer = new RequestCustomer();
         requestCustomer.setName("Teste Novo");
         requestCustomer.setEmail("testenovo@example.com");
-        requestCustomer.setCellPhone("+55 11 11111-1111");
+        requestCustomer.setCellPhone("(11) 11111-1111");
         requestCustomer.setNumberHouse(155);
         requestCustomer.setZipCode("07341418");
 

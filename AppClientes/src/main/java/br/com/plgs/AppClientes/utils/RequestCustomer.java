@@ -19,7 +19,7 @@ public class RequestCustomer {
     private String email;
 
     @NotBlank(message = "O telefone não pode ser nulo ou vazio.")
-    @Pattern(regexp = "^\\+\\d{1,3} \\d{1,3} \\d{4,5}-\\d{4}$", message = "Telefone deve seguir o formato internacional.")
+    @Pattern(regexp = "^\\(\\d{2}\\) \\d{4,5}-\\d{4}$", message = "Telefone deve seguir o formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX.")
     private String cellPhone;
 
     @NotNull(message = "O número da residência não pode ser nulo.")
