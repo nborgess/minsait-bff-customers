@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import br.com.plgs.AppClientes.utils.RequestCustomer;
-import br.com.plgs.AppClientes.utils.ResponseCustomer;
+import br.com.plgs.AppClientes.utils.CustomerRequest;
+import br.com.plgs.AppClientes.utils.CustomerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ import br.com.plgs.AppClientes.exception.CustomerNotFoundException;
 import br.com.plgs.AppClientes.model.Address;
 import br.com.plgs.AppClientes.model.Customer;
 import br.com.plgs.AppClientes.repository.CustomerRepository;
-import br.com.plgs.AppClientes.service.interfaces.CustomerServiceInterface;
+import br.com.plgs.AppClientes.service.interfaces.ICustomerService;
 
 @Service
-public class CustomerService implements CustomerServiceInterface {
+public class CustomerService implements ICustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -25,7 +25,7 @@ public class CustomerService implements CustomerServiceInterface {
     @Autowired
     private CepService cepService;
 
-	public ResponseCustomer save(RequestCustomer requestCustomer) {
+	public CustomerResponse save(CustomerRequest requestCustomer) {
 
 		if (customerRepository.findByEmail(requestCustomer.getEmail()).isPresent()) {
 			throw new CustomerException("O e-mail fornecido já está em uso.");
@@ -49,7 +49,7 @@ public class CustomerService implements CustomerServiceInterface {
 
 		Customer savedCustomer = customerRepository.save(customer);
 
-		ResponseCustomer responseCustomer = new ResponseCustomer();
+		CustomerResponse responseCustomer = new CustomerResponse();
 		responseCustomer.setId(savedCustomer.getId());
 		responseCustomer.setName(savedCustomer.getName());
 		responseCustomer.setEmail(savedCustomer.getEmail());
@@ -61,11 +61,11 @@ public class CustomerService implements CustomerServiceInterface {
 		return responseCustomer;
 	}
 
-	public Optional<ResponseCustomer> findById(Long id) {
+	public Optional<CustomerResponse> findById(Long id) {
 		Customer findCustomer = customerRepository.findById(id)
 				.orElseThrow(() -> new CustomerNotFoundException("Não há cliente com o ID fornecido."));
 
-		ResponseCustomer responseCustomer = new ResponseCustomer();
+		CustomerResponse responseCustomer = new CustomerResponse();
 		responseCustomer.setId(findCustomer.getId());
 		responseCustomer.setName(findCustomer.getName());
 		responseCustomer.setEmail(findCustomer.getEmail());
@@ -78,12 +78,12 @@ public class CustomerService implements CustomerServiceInterface {
 	}
 
 
-	public List<ResponseCustomer> findAll() {
+	public List<CustomerResponse> findAll() {
 		List<Customer> customers = customerRepository.findAll();
 
-		List<ResponseCustomer> responseCustomers = customers.stream()
+		List<CustomerResponse> responseCustomers = customers.stream()
 				.map(customer -> {
-					ResponseCustomer responseCustomer = new ResponseCustomer();
+					CustomerResponse responseCustomer = new CustomerResponse();
 					responseCustomer.setId(customer.getId());
 					responseCustomer.setName(customer.getName());
 					responseCustomer.setEmail(customer.getEmail());
@@ -99,7 +99,7 @@ public class CustomerService implements CustomerServiceInterface {
 	}
 
 
-	public ResponseCustomer update(RequestCustomer requestCustomer, Long id) {
+	public CustomerResponse update(CustomerRequest requestCustomer, Long id) {
 		Optional<Customer> findCustomer = customerRepository.findById(id);
 
 		if (!findCustomer.isPresent()) {
@@ -140,7 +140,7 @@ public class CustomerService implements CustomerServiceInterface {
 
 		Customer savedCustomer = customerRepository.save(updCustomer);
 
-		ResponseCustomer responseCustomer = new ResponseCustomer();
+		CustomerResponse responseCustomer = new CustomerResponse();
 		responseCustomer.setId(savedCustomer.getId());
 		responseCustomer.setName(savedCustomer.getName());
 		responseCustomer.setEmail(savedCustomer.getEmail());

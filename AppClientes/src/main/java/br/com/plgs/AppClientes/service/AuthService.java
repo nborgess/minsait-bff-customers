@@ -12,7 +12,7 @@ import br.com.plgs.AppClientes.dto.LoginUserDto;
 import br.com.plgs.AppClientes.dto.RegisterUserDto;
 import br.com.plgs.AppClientes.exception.InvalidCredentialsException;
 import br.com.plgs.AppClientes.exception.TokenExpiredException;
-import br.com.plgs.AppClientes.model.Roles;
+import br.com.plgs.AppClientes.enums.Roles;
 import br.com.plgs.AppClientes.model.User;
 import br.com.plgs.AppClientes.repository.UserRepository;
 

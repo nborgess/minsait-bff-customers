@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.plgs.AppClientes.exception.SuccessResponse;
 import br.com.plgs.AppClientes.service.CustomerService;
-import br.com.plgs.AppClientes.utils.RequestCustomer;
-import br.com.plgs.AppClientes.utils.ResponseCustomer;
+import br.com.plgs.AppClientes.utils.CustomerRequest;
+import br.com.plgs.AppClientes.utils.CustomerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
@@ -34,8 +34,8 @@ public class CustomerController {
 	@Operation(summary = "Grava o registro de Cliente")
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-	public ResponseEntity<ResponseCustomer> save(@Valid @RequestBody RequestCustomer requestCustomer) {
-		ResponseCustomer responseCustomer = customerService.save(requestCustomer);
+	public ResponseEntity<CustomerResponse> save(@Valid @RequestBody CustomerRequest requestCustomer) {
+		CustomerResponse responseCustomer = customerService.save(requestCustomer);
 		URI location = URI.create("/clientes/" + responseCustomer.getId());
 		return ResponseEntity.created(location).body(responseCustomer);
 	}
@@ -44,8 +44,8 @@ public class CustomerController {
 	@Operation(summary = "Busca registro pelo ID do Cliente")
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-	public ResponseEntity<Optional<ResponseCustomer>> findById(@Valid @PathVariable Long id) {
-		Optional<ResponseCustomer> responseCustomer = customerService.findById(id);
+	public ResponseEntity<Optional<CustomerResponse>> findById(@Valid @PathVariable Long id) {
+		Optional<CustomerResponse> responseCustomer = customerService.findById(id);
 		return ResponseEntity.ok(responseCustomer);
 	}
 
@@ -53,8 +53,8 @@ public class CustomerController {
 	@Operation(summary = "Busca todos os registros de Clientes")
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-	public ResponseEntity<List<ResponseCustomer>> findAllCustomers() {
-		List<ResponseCustomer> responseCustomers = customerService.findAll();
+	public ResponseEntity<List<CustomerResponse>> findAllCustomers() {
+		List<CustomerResponse> responseCustomers = customerService.findAll();
 		return ResponseEntity.ok(responseCustomers);
 	}
 
@@ -62,8 +62,8 @@ public class CustomerController {
 	@Operation(summary = "Atualiza o registro do Cliente por ID")
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-	public ResponseEntity<ResponseCustomer> update(@Valid @RequestBody RequestCustomer requestCustomer, @PathVariable Long id) {
-		ResponseCustomer responseCustomer = customerService.update(requestCustomer, id);
+	public ResponseEntity<CustomerResponse> update(@Valid @RequestBody CustomerRequest requestCustomer, @PathVariable Long id) {
+		CustomerResponse responseCustomer = customerService.update(requestCustomer, id);
 		return ResponseEntity.ok(responseCustomer);
 	}
 

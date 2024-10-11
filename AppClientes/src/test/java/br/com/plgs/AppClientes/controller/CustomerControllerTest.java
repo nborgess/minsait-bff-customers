@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.plgs.AppClientes.configuration.JwtTokenUtil;
 import br.com.plgs.AppClientes.model.Address;
 import br.com.plgs.AppClientes.service.CustomerService;
-import br.com.plgs.AppClientes.utils.RequestCustomer;
-import br.com.plgs.AppClientes.utils.ResponseCustomer;
+import br.com.plgs.AppClientes.utils.CustomerRequest;
+import br.com.plgs.AppClientes.utils.CustomerResponse;
 
 @WebMvcTest(CustomerController.class)
 public class CustomerControllerTest {
@@ -69,14 +69,14 @@ public class CustomerControllerTest {
         address.setCity("Cidade Teste");
         address.setState("SP");
 
-        RequestCustomer requestCustomer = new RequestCustomer();
+        CustomerRequest requestCustomer = new CustomerRequest();
         requestCustomer.setName("Teste");
         requestCustomer.setEmail("teste@example.com");
         requestCustomer.setCellPhone("(11) 95435-5435");
         requestCustomer.setNumberHouse(155);
         requestCustomer.setZipCode("07341418");
 
-        ResponseCustomer responseCustomer = new ResponseCustomer();
+        CustomerResponse responseCustomer = new CustomerResponse();
         responseCustomer.setId(1L);
         responseCustomer.setName(requestCustomer.getName());
         responseCustomer.setEmail(requestCustomer.getEmail());
@@ -85,7 +85,7 @@ public class CustomerControllerTest {
         responseCustomer.setZipCode(requestCustomer.getZipCode());
         responseCustomer.setAddress(address); 
 
-        given(customerService.save(any(RequestCustomer.class))).willReturn(responseCustomer);
+        given(customerService.save(any(CustomerRequest.class))).willReturn(responseCustomer);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/clientes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +106,7 @@ public class CustomerControllerTest {
 
     @Test
     void testFindById() throws Exception {
-        ResponseCustomer responseCustomer = new ResponseCustomer();
+        CustomerResponse responseCustomer = new CustomerResponse();
         responseCustomer.setId(1L);
         responseCustomer.setName("Teste");
 
@@ -121,7 +121,7 @@ public class CustomerControllerTest {
 
     @Test
     void testFindAllCustomers() throws Exception {
-        ResponseCustomer responseCustomer = new ResponseCustomer();
+        CustomerResponse responseCustomer = new CustomerResponse();
         responseCustomer.setId(1L);
         responseCustomer.setName("Teste");
 
@@ -145,14 +145,14 @@ public class CustomerControllerTest {
         address.setCity("Cidade Teste");
         address.setState("SP");
 
-        RequestCustomer requestCustomer = new RequestCustomer();
+        CustomerRequest requestCustomer = new CustomerRequest();
         requestCustomer.setName("Teste Novo");
         requestCustomer.setEmail("testenovo@example.com");
         requestCustomer.setCellPhone("(11) 11111-1111");
         requestCustomer.setNumberHouse(155);
         requestCustomer.setZipCode("07341418");
 
-        ResponseCustomer responseCustomer = new ResponseCustomer();
+        CustomerResponse responseCustomer = new CustomerResponse();
         responseCustomer.setId(1L);
         responseCustomer.setName(requestCustomer.getName());
         responseCustomer.setEmail(requestCustomer.getEmail());
@@ -161,7 +161,7 @@ public class CustomerControllerTest {
         responseCustomer.setZipCode(requestCustomer.getZipCode());
         responseCustomer.setAddress(address); 
 
-        given(customerService.update(any(RequestCustomer.class), anyLong())).willReturn(responseCustomer);
+        given(customerService.update(any(CustomerRequest.class), anyLong())).willReturn(responseCustomer);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/clientes/1")
                         .contentType(MediaType.APPLICATION_JSON)

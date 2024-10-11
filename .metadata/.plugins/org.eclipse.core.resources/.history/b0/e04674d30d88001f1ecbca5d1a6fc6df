@@ -1,0 +1,20 @@
+package br.com.plgs.AppClientes.service.interfaces;
+
+import java.util.List;
+import java.util.Optional;
+
+import br.com.plgs.AppClientes.utils.CustomerRequest;
+import br.com.plgs.AppClientes.utils.ResponseCustomer;
+
+public interface CustomerServiceInterface {
+
+	ResponseCustomer save(CustomerRequest requestCustomer);
+
+	Optional<ResponseCustomer> findById(Long id);
+
+	List<ResponseCustomer> findAll();
+
+	ResponseCustomer update(CustomerRequest requestCustomer, Long id);
+
+	void delete(Long id);
+}
